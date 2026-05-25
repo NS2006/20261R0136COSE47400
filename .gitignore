@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Deep learning checkpoints and generated artifacts
+*.pt
+*.pth
+*.ckpt
+checkpoints/
+wandb/
+runs/
+
+# Local datasets: do not upload large/raw data files to GitHub
+data/*
+!data/README.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
