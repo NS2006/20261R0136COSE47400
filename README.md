@@ -14,11 +14,9 @@
 
 ## Project Overview
 
-This repository contains our Deep Learning course project on robust industrial anomaly detection. The project investigates the limitations of **SuperAD**, a state-of-the-art nearest-neighbor memory-bank baseline, and proposes a highly optimized **Dual-Memory Bank with Orthogonal Projection** approach. 
+This repository contains our Deep Learning course project on robust industrial anomaly detection. The project investigates the limitations of **SuperAD**, a state-of-the-art nearest-neighbor memory-bank baseline, and proposes a highly optimized approach. 
 
-By upgrading the architecture from point-to-point nearest-neighbor matching to **residual-based subspace reconstruction**, our model significantly reduces false positives caused by environmental noise and unpredictable textures.
-
-**Current Status:** Completed Project / Final Implementation
+By upgrading the architecture from point-to-point to **point to space**, our model significantly reduces false positives caused by environmental noise and unpredictable textures.
 
 ## Motivation & Baseline Limitations
 
