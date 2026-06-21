@@ -1,37 +1,34 @@
-# Beyond Nearest Neighbor: Dual-Memory Bank & Orthogonal Projection for Robust Anomaly Detection
+# PCA-Guided Multi-Layer Anomaly Detection with Weighted DINOv2 Heatmaps
 
 ## Project Overview
 
-This repository contains our deep learning course project on robust anomaly detection. The project investigates limitations of **SuperAD**, a nearest-neighbor memory-bank baseline, and proposes a **Dual-Memory Bank with Orthogonal Projection** approach.
+This repository contains our Deep Learning course project on robust industrial anomaly detection. The project investigates the limitations of **SuperAD**, a state-of-the-art nearest-neighbor memory-bank baseline, and proposes a highly optimized **Dual-Memory Bank with Orthogonal Projection** approach. 
 
-**Current status:** Midterm proposal / implementation in progress.
+By upgrading the architecture from point-to-point nearest-neighbor matching to **residual-based subspace reconstruction**, our model significantly reduces false positives caused by environmental noise and unpredictable textures.
 
-## Motivation
+**Current Status:** Completed Project / Final Implementation
 
-The baseline model may fail in challenging cases such as:
+## Motivation & Baseline Limitations
 
-- Normal objects with highly variable patterns, such as air bubbles in fruit jelly, which can cause false positives.
-- Blurry or reflective objects, where glare can hide subtle defects and cause false negatives.
-- Specular highlights on glass or metal surfaces, which can be mistaken for anomalies.
-- Missing-component defects, where the missing region resembles normal background texture.
+While the SuperAD baseline is highly effective, our analysis revealed four critical blind spots in real-world industrial datasets (evaluated on MVTec AD 2):
 
-## Baseline: SuperAD
+1. **Air Bubble Confusion:** Normal objects with highly variable patterns (e.g., air bubbles in fruit jelly) trigger massive false positives because a fixed memory bank cannot memorize infinite variations.
+2. **Hidden by Light:** The model misses actual dark defects because bouncing light and reflections act as camouflage.
+3. **Surface Glare:** Bright lighting creates specular highlights on shiny objects (e.g., metal cans) that the model incorrectly detects as physical damage.
+4. **The Background Blend:** Missing-component anomalies (e.g., a hole in sheet metal) go undetected because the empty space mimics the normal dark background.
 
-The baseline workflow presented in our project is:
+## Our Proposed Approach
 
-1. Extract features using **DINOv2-large** at layers 6, 12, 18, and 24.
-2. Apply PCA-based filtering to reduce background influence.
-3. Construct four memory banks.
-4. Use nearest-neighbor search during inference to map anomaly scores back to images.
+To solve these limitations, our group fundamentally upgraded the anomaly scoring architecture. Our key contributions include:
 
-## Proposed Model
+* **Dual-Memory Bank Initialization:** We dynamically separate extracted DINOv2 features into a Foreground (Object) Bank and a Background Bank using custom high-resolution morphological masking.
+* **Background Noise Suppression (Soft Projection):** We extract the principal axes of noise (e.g., glare, lighting shifts) from the background bank and apply a soft projection matrix to filter these out of the test features before scoring.
+* **Residual-Based SVD Scoring (The Covariance Trick):** We replaced the standard K-NN search with an orthogonal projection onto a Normal SVD subspace. The unexplained variance (the residual) serves as the true anomaly score. To prevent Out-Of-Memory (OOM) errors during basis construction, we utilized a mathematical covariance trick, accelerating processing exponentially.
+* **Weighted Multi-Layer Heatmap Fusion:** Instead of equally averaging the four DINOv2 layers, we apply empirical weights (`0.10, 0.18, 0.32, 0.40`). This heavily penalizes the noisy, low-level textures of early layers while prioritizing the robust semantic features of deeper layers.
 
-Our proposed method replaces point-to-point nearest-neighbor matching with **point-to-space reconstruction**:
+## Results Summary
 
-- Construct normal feature subspaces using Singular Value Decomposition (SVD).
-- Use orthogonal projection to measure how much of a test feature cannot be explained by the normal subspace.
-- Add a separate **background memory bank** so background effects and highlights can be reduced before normal-feature reconstruction.
-- Study category-specific choices of `k_bg` and `k_normal` rather than using one fixed setting for every object category.
+By combining optimal PCA projection strength ($\alpha = 0.5$) with weighted layer fusion, our model achieved a mean AUROC of **0.7705**, successfully outperforming the SuperAD baseline (0.7671) on the MVTec AD 2 dataset, with notable improvements in challenging classes like `fruit_jelly` and `sheet_metal`.
 
 ## Repository Structure
 
@@ -40,21 +37,17 @@ Our proposed method replaces point-to-point nearest-neighbor matching with **poi
 ├── README.md
 ├── .gitignore
 ├── data/          # Dataset instructions and local data placement
-├── docs/          # Project overview and methodology documentation
+├── docs/          # Project overview, PPT slides, and methodology documentation
 ├── experiments/   # Experiment planning and configuration notes
-├── notebooks/     # Exploratory notebooks
-├── results/       # Evaluation results, figures, and tables
-└── src/           # Implementation code
+├── notebooks/     # Exploratory notebooks and visualization engines
+├── results/       # Evaluation results, heatmaps, histograms, and CSV logs
+└── src/           # Core implementation code (DINOv2, SVD logic, masking)
 ```
 
 ## Team Information
 
-- Team: Team 8
-- Course: Deep Learning Project
-- Team Repository Owner: Fahreen Qusyairi (`FhreenQ`)
-
-Add all teammates' names, GitHub IDs, and forked repository links here before final submission.
-
-## GitHub Workflow
-
-This repository is used as the **Team Repository**. Team members should fork this repository, develop changes in their own forks, and submit completed work back through Pull Requests.
+**Team 8 | Deep Learning Project**
+* **Contributors:** 
+    * Fahreen Qusyairi - [@FhreenQ](https://github.com/FhreenQ)
+    * Giyeon Gwon - [@GiyeonGwon](https://github.com/GiyeonGwon)
+    * Niko Sutiono - [@NS2006](https://github.com/NS2006)
