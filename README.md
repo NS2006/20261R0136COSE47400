@@ -40,19 +40,6 @@ To solve these limitations, our group fundamentally upgraded the anomaly scoring
 
 By combining optimal PCA projection strength ($\alpha = 0.5$) with weighted layer fusion, our model achieved a mean AUROC of **0.7705**, successfully outperforming the SuperAD baseline (0.7671) on the MVTec AD 2 dataset, with notable improvements in challenging classes like `fruit_jelly` and `sheet_metal`.
 
-## Repository Structure
-
-```text
-.
-├── README.md
-├── .gitignore
-├── data/          # Dataset instructions and local data placement
-├── docs/          # Project overview, PPT slides, and methodology documentation
-├── experiments/   # Experiment planning and configuration notes
-├── notebooks/     # Exploratory notebooks and visualization engines
-├── results/       # Evaluation results, heatmaps, histograms, and CSV logs
-└── src/           # Core implementation code (DINOv2, SVD logic, masking)
-```
 
 ## How to Run
 
