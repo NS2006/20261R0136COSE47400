@@ -1,5 +1,17 @@
 # PCA-Guided Multi-Layer Anomaly Detection with Weighted DINOv2 Heatmaps
 
+## Team Information
+
+**Team 8 | Deep Learning Project**
+* **Contributors:** 
+    * Fahreen Qusyairi - [@FhreenQ](https://github.com/FhreenQ)
+    * Giyeon Gwon - [@GiyeonGwon](https://github.com/GiyeonGwon)
+    * Niko Sutiono - [@NS2006](https://github.com/NS2006)
+
+**Key References:**
+* **Baseline Framework:** [SuperAD (Zhang et al., 2025)](https://doi.org/10.48550/arXiv.2505.19750)
+* **Evaluated on:** [MVTec AD 2 Dataset](https://doi.org/10.48550/arXiv.2503.21622)
+
 ## Project Overview
 
 This repository contains our Deep Learning course project on robust industrial anomaly detection. The project investigates the limitations of **SuperAD**, a state-of-the-art nearest-neighbor memory-bank baseline, and proposes a highly optimized **Dual-Memory Bank with Orthogonal Projection** approach. 
@@ -44,10 +56,27 @@ By combining optimal PCA projection strength ($\alpha = 0.5$) with weighted laye
 └── src/           # Core implementation code (DINOv2, SVD logic, masking)
 ```
 
-## Team Information
+## How to Run
 
-**Team 8 | Deep Learning Project**
-* **Contributors:** 
-    * Fahreen Qusyairi - [@FhreenQ](https://github.com/FhreenQ)
-    * Giyeon Gwon - [@GiyeonGwon](https://github.com/GiyeonGwon)
-    * Niko Sutiono - [@NS2006](https://github.com/NS2006)
+### 1. Install Requirements
+Before running the code, ensure you have all the necessary Python dependencies installed.
+
+Install the required packages by running:
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Download the Dataset
+The model requires the MVTec AD 2 dataset to run. You can download the dataset via any of the links below:
+* **[Official MVTec AD Website](https://www.mvtec.com/research-teaching/datasets/mvtec-ad)**
+* **[Google Drive: Tar.gz Version](https://drive.google.com/file/d/1EnY--wcL5g49UUZNB1XLcmAvNScs2Qfv/view?usp=sharing)**
+* **[Google Drive: Pre-extracted Folder Structure Version](https://drive.google.com/drive/folders/1vMdzM4Dud_OwdxImTWS1wA4Qsc1fCMJk?usp=drive_link)**
+
+### 3. Execute the Pipeline
+To run the evaluation, use the `test_public.py` script. The `--data_root` argument is dynamic and depends on where you saved the dataset on your local machine. 
+
+Replace `../../mvtec_ad_2` with your actual directory path:
+
+```bash
+python test_public.py --data_root ../../mvtec_ad_2
+```
